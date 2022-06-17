@@ -70,14 +70,6 @@ void generateInputAndLabel(vector<vector<double>>& XOR_input, vector<vector<doub
             XOR_label.emplace_back(w);
         }
     }
-    // cout << XOR_input.size() << '\t' << XOR_label.size() << endl;
-    // for(Size trainingNum=0; trainingNum<4; ++trainingNum) {
-        // cout << trainingNum << endl;
-        // for(auto i: XOR_input[trainingNum]) cout << i << '\t';
-        // cout << endl;    
-        // for(auto i: XOR_label[trainingNum]) cout << i << '\t';
-        // cout << endl;    
-    // }
 }
 
 void pickInputForOneBatch(vector<vector<double>>& XOR_input, vector<vector<double>>& XOR_pickedInput,
@@ -89,14 +81,6 @@ void pickInputForOneBatch(vector<vector<double>>& XOR_input, vector<vector<doubl
         XOR_pickedInput[i] = XOR_input[selection];
         XOR_pickedLabel[i] = XOR_label[selection];
     }
-    // cout << XOR_input.size() << '\t' << XOR_label.size() << endl;
-    // for(Size trainingNum=0; trainingNum<4; ++trainingNum) {
-        // cout << trainingNum << endl;
-        // for(auto i: XOR_input[trainingNum]) cout << i << '\t';
-        // cout << endl;    
-        // for(auto i: XOR_label[trainingNum]) cout << i << '\t';
-        // cout << endl;    
-    // }
 }
 
 Size isItCorrect(vector<double>& outputLayer, vector<double>& XOR_ith_label) {
@@ -129,7 +113,6 @@ void initWB(vector<vector<vector<double>>>& w, vector<vector<double>>& b) {
 
 void calculateError(vector<double>& outputLayer, vector<double>& XOR_ith_label, double& error) {
     for(Size j=0; j<XOR_ith_label.size(); j++){
-        // error += 1./4.*(XOR_ith_label[j]-outputLayer[j])*(XOR_ith_label[j]-outputLayer[j]); // MSE
         error -= XOR_ith_label[j]*log(outputLayer[j]); // negative log-likelihood
     }
 }
@@ -138,7 +121,6 @@ void calculateError(vector<double>& outputLayer, vector<double>& XOR_ith_label, 
 double calculateError(vector<double>& outputLayer, vector<double>& XOR_ith_label) {
     double error=0;
     for(Size j=0; j<XOR_ith_label.size(); j++){
-        // error += 1./4.*(XOR_ith_label[j]-outputLayer[j])*(XOR_ith_label[j]-outputLayer[j]); // MSE
         error -= XOR_ith_label[j]*log(outputLayer[j]); // negative log-likelihood
     }
     return error;
@@ -182,21 +164,12 @@ void backPropagate(vector<double>& hiddenLayer, vector<double>& outputLayer, vec
         if(indice==outputLayerNum) {
             for(Size i=0; i<outputLayer.size(); ++i) {
                 delta1[i] = (outputLayer[i] - XOR_ith_label[i]); // negative log-likelihood
-                // for(Size l=0; l<outputLayer.size(); ++l) {
-                    // delta1[i] -= 1./2*outputLayer[l] * (kroneckerDelta(l, i) - outputLayer[i]) * (XOR_ith_label[l] - outputLayer[l]); // MSE
-                    // delta1[i] -= (kroneckerDelta(l, i) - outputLayer[i]) * XOR_ith_label[l]; // negative log-likelihood
-                    // deltaW[i][j] += learningRate * hiddenLayer[j] * (kroneckerDelta(l, i) - outputLayer[i]) * XOR_ith_label[l];
-                    // LOG-LIKELIHOOD energy function and SOFTMAX activation function.
-                // }
             }
         }
         else {
             for(Size i=0; i<hiddenLayer.size(); ++i) {
                 for(Size m=0; m<outputLayer.size(); ++m) {
                     delta0[i] += w[indice][m][i] * delta1[m];
-                    // w[indice-1][i][j] += XOR_ith_input[j] * ((double)1 - hiddenLayer[i]) * w[indice][m][i] * deltaW[m][i];
-                    // deltaW[m][i] = 0;
-                    // LOG-LIKELIHOOD energy function and SIGMOID activation function.
                 }
                 delta0[i] *= hiddenLayer[i] * (1-hiddenLayer[i]);
             }
@@ -258,7 +231,6 @@ int main(int, char** argv){
     vector<vector<double>> XOR_pickedInput(50);
     vector<vector<double>> XOR_pickedLabel(50);
     generateInputAndLabel(XOR_input, XOR_label, inputNeuronNum, trainingNum);
-    // getInputAndLabel(XOR_input, XOR_label);
     
     vector<vector<double>> w1(hiddenNeuronNum, vector<double>(inputNeuronNum)); 
     vector<double> b1(hiddenNeuronNum); 

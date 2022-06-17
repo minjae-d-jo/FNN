@@ -10,7 +10,6 @@
 #include <iostream>
 #include <Eigen/Dense>
 
-// using Eigen::MatrixXd;
 using namespace std;
 using namespace Eigen;
 
@@ -59,15 +58,9 @@ int main() {
     
 	MatrixXd training_set_patterns = MNIST::get_image(training_set_size, image_size, "train-images-idx3-ubyte", 4 * 4);
 	MatrixXd training_set_keys = MNIST::get_label(training_set_size, label_size, "train-labels-idx1-ubyte", 4 * 2);
-	// VectorXd a = Map<VectorXd> (training_set_patterns.col(0).data(), training_set_patterns.col(0).size());
 	RowVectorXd a = Map<VectorXd> (training_set_patterns.col(0).data(), training_set_patterns.col(0).size());
-	// MatrixXd b = Map<MatrixXd> (a.data(), a.size());
-	// cout << a<< endl;
-	// Map<Matrix<double, 100, 10>> a_eigen(a.data())
-	// os << Map<Matrix<double, 28, 28>> (a.data()) << endl;
-	cout << training_set_patterns.col(0) << endl;
-	// cout << Map<Matrix<unsigned char, 28, 28>> (training_set_patterns.col(0).data(), 28) << endl;
 
+	cout << training_set_patterns.col(0) << endl;
 	cout << training_set_keys.col(0) << endl;
 	return 0;
 }

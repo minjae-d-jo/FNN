@@ -272,22 +272,15 @@ int main(int, char** argv){
     Layer layer1(inputNeuronNum, hiddenNeuronNum, batchSize);
     Layer layer2(hiddenNeuronNum, outputNeuronNum, batchSize);
 
-    // ostringstream oss_train;
-    // oss_train << "Energy_train_" << inputNeuronNum << "_" << hiddenNeuronNum << "_" << outputNeuronNum << "_" << trainingNum << "_" << testNum << ".table";
-    // ofstream os_train("/pds/pds181/jmj/ML/FNN/Result/"+oss_train.str());
     ostringstream oss_test;
     oss_test << "FNN_" << inputNeuronNum << "_" << hiddenNeuronNum << "_" << outputNeuronNum << "_" << trainingNum << "_" << testNum << ".table";
     ofstream os_test("/pds/pds181/jmj/ML/FNN/Result/"+oss_test.str());
-    // ostringstream oss_validate;
-    // oss_validate << "Energy_validate_" << inputNeuronNum << "_" << hiddenNeuronNum << "_" << outputNeuronNum << "_" << trainingNum << "_" << testNum << ".table";
-    // ofstream os_validate("/pds/pds181/jmj/ML/FNN/Result/"+oss_validate.str());
     for(Size epoch=0; epoch<2000; ++epoch) {
         FNN::TrainFNN(layer1, layer2, XOR_pickedInput, XOR_pickedLabel, XOR_input, XOR_label, trainingNum, batchSize);
 
         vector<vector<double>> XOR_input_test;
         vector<vector<double>> XOR_label_test;
         XOR::generateInputAndLabel(XOR_input_test, XOR_label_test, inputNeuronNum, testNum);
-        // FNN::ValidateFNN(layer1, layer2, XOR_input_test, XOR_label_test, epoch, os_validate);
         FNN::TestFNN(layer1, layer2, XOR_input_test, XOR_label_test, epoch, os_test);
     }
     return 0;

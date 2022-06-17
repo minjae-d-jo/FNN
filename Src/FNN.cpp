@@ -34,7 +34,8 @@ private:
     MatrixXd Delta;
 
 public:
-    Layer(Size __previousNeuronNum__, Size __nextNeuronNum__, Size __batchSize__) : previousNeuronNum(__previousNeuronNum__), nextNeuronNum(__nextNeuronNum__), batchSize(__batchSize__), W(__nextNeuronNum__, (__previousNeuronNum__)), B(__nextNeuronNum__), Y(__nextNeuronNum__, __batchSize__), Delta(__nextNeuronNum__, __batchSize__) {
+    Layer(Size _previousNeuronNum_, Size _nextNeuronNum_, Size _batchSize_) 
+    : previousNeuronNum(_previousNeuronNum_), nextNeuronNum(_nextNeuronNum_), batchSize(_batchSize_), W(_nextNeuronNum_, (_previousNeuronNum_)), B(_nextNeuronNum_), Y(_nextNeuronNum_, _batchSize_), Delta(_nextNeuronNum_, _batchSize_) {
         initialize();
     }
     
@@ -285,28 +286,17 @@ int main(int, char** argv){
     MatrixXd input_test(inputNeuronNum, testNum);
     MatrixXd label_test(outputNeuronNum, testNum);
     
-    // XOR::get_image_and_label(input, label, inputNeuronNum, trainingNum);
-    // XOR::get_image_and_label(input_test, label_test, inputNeuronNum, testNum);
-    
     input = MNIST::get_image(trainingNum, inputNeuronNum, "train-images-idx3-ubyte", 4 * 4);
     label = MNIST::get_label(trainingNum, outputNeuronNum, "train-labels-idx1-ubyte", 4 * 2);
-    // input_test = MNIST::get_image(testNum, inputNeuronNum, "train-images-idx3-ubyte", 4 * 4 + 28 * 28 * trainingNum);
-    // label_test = MNIST::get_label(testNum, outputNeuronNum, "train-labels-idx1-ubyte", 4 * 2 + trainingNum);
     input_test = MNIST::get_image(testNum, inputNeuronNum, "t10k-images-idx3-ubyte", 4 * 4);
     label_test = MNIST::get_label(testNum, outputNeuronNum, "t10k-labels-idx1-ubyte", 4 * 2);
 
     Layer layer1(inputNeuronNum, hiddenNeuronNum, batchSize);
     Layer layer2(hiddenNeuronNum, outputNeuronNum, batchSize);
 
-    // ostringstream oss_train;
-    // oss_train << "Energy_train_" << inputNeuronNum << "_" << hiddenNeuronNum << "_" << outputNeuronNum << "_" << trainingNum << "_" << testNum << ".table";
-    // ofstream os_train("/pds/pds181/jmj/ML/FNN/Result/"+oss_train.str());
     ostringstream oss_test;
     oss_test << "FNN_Eigen_" << inputNeuronNum << "_" << hiddenNeuronNum << "_" << outputNeuronNum << "_" << trainingNum << "_" << testNum << ".table";
     ofstream os_test("/pds/pds181/jmj/ML/FNN/Result/"+oss_test.str());
-    // ostringstream oss_validate;
-    // oss_validate << "Energy_validate_" << inputNeuronNum << "_" << hiddenNeuronNum << "_" << outputNeuronNum << "_" << trainingNum << "_" << testNum << ".table";
-    // ofstream os_validate("/pds/pds181/jmj/ML/FNN/Result/"+oss_validate.str());
 
     for(Size epoch=0; epoch<2000; ++epoch) {
         FNN::train_FNN(layer1, layer2, input, label, trainingNum, batchSize);

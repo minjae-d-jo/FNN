@@ -9,7 +9,7 @@ function build {
 	echo -e ":: $1"
 	g++ -std=c++11 -Wall \
 		-O3 -flto \
-		-I /usr/include/eigen3/ -I $srcDir -I $libDir \
+		-I /usr/local/include/eigen3/ -I $srcDir -I $libDir \
 		-o $binDir/$1 \
 		$srcDir/$1.cpp
 }
@@ -38,9 +38,4 @@ function debugBuild {
 build FNN
 # build FNN_BSGD
 # build FNN_SGD
-# build FNN_original
 
-# build sum_test
-# build unary_lambda
-# build eigen
-# build MNIST
