@@ -176,7 +176,7 @@ void pick_image_and_label(MatrixXd& input, MatrixXd& pickedInput,
 namespace FNN {
     void test_FNN(Layer& layer1, Layer& layer2, 
         MatrixXd& input_test, MatrixXd& label_test, 
-        const Size& testNum, const Size& batchSize, ofstream& os){
+        const Size& testNum, const Size& batchSize, ofstream& os) {
         
         double correct = 0;
         MatrixXd pickedInput(input_test.rows(), batchSize);
@@ -295,8 +295,10 @@ int main(int, char** argv){
     Layer layer2(hiddenNeuronNum, outputNeuronNum, batchSize);
 
     ostringstream oss_test;
-    oss_test << "FNN_Eigen_" << inputNeuronNum << "_" << hiddenNeuronNum << "_" << outputNeuronNum << "_" << trainingNum << "_" << testNum << ".table";
-    ofstream os_test("/pds/pds181/jmj/ML/FNN/Result/"+oss_test.str());
+    oss_test << "FNN_Test_" << inputNeuronNum << "_" << hiddenNeuronNum << "_" << outputNeuronNum << "_" << trainingNum << "_" << testNum << ".table";
+    // ofstream os_test("/pds/pds181/jmj/ML/FNN/Result/"+oss_test.str());
+    ofstream os_test(oss_test.str());
+    
 
     for(Size epoch=0; epoch<2000; ++epoch) {
         FNN::train_FNN(layer1, layer2, input, label, trainingNum, batchSize);
