@@ -38,7 +38,8 @@ public:
     : previousNeuronNum(_previousNeuronNum_), nextNeuronNum(_nextNeuronNum_), batchSize(_batchSize_), W(_nextNeuronNum_, (_previousNeuronNum_)), B(_nextNeuronNum_), Y(_nextNeuronNum_, _batchSize_), Delta(_nextNeuronNum_, _batchSize_) {
         initialize();
     }
-    
+
+    ~Layer() { }    
     MatrixXd& getY() {return Y;}
     MatrixXd& getDelta() {return Delta;}
     MatrixXd& getW() {return W;}
@@ -291,19 +292,18 @@ int main(int, char** argv){
     input_test = MNIST::get_image(testNum, inputNeuronNum, "t10k-images-idx3-ubyte", 4 * 4);
     label_test = MNIST::get_label(testNum, outputNeuronNum, "t10k-labels-idx1-ubyte", 4 * 2);
 
-    Layer layer1(inputNeuronNum, hiddenNeuronNum, batchSize);
-    Layer layer2(hiddenNeuronNum, outputNeuronNum, batchSize);
+    Layer* layer1 = new Layer(inputNeuronNum, hiddenNeuronNum, batchSize);
+    Layer* layer2 = new Layer(hiddenNeuronNum, outputNeuronNum, batchSize);
 
     ostringstream oss_test;
     oss_test << "FNN_Test_" << inputNeuronNum << "_" << hiddenNeuronNum << "_" << outputNeuronNum << "_" << trainingNum << "_" << testNum << ".table";
-    // ofstream os_test("/pds/pds181/jmj/ML/FNN/Result/"+oss_test.str());
     ofstream os_test(oss_test.str());
     
 
     for(Size epoch=0; epoch<2000; ++epoch) {
-        FNN::train_FNN(layer1, layer2, input, label, trainingNum, batchSize);
-        // FNN::validate_FNN(layer1, layer2, input_test, label_test, testNum, batchSize, os_validate);
-        FNN::test_FNN(layer1, layer2, input_test, label_test, testNum, batchSize, os_test);
+        FNN::train_FNN(*layer1, *layer2, input, label, trainingNum, batchSize);
+        // FNN::validate_FNN(*layer1, *layer2, input_test, label_test, testNum, batchSize, os_validate);
+        FNN::test_FNN(*layer1, *layer2, input_test, label_test, testNum, batchSize, os_test);
     }
     return 0;
 }
